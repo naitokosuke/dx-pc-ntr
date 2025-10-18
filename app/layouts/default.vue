@@ -1,8 +1,17 @@
+<script setup lang="ts">
+const { breadcrumbs } = useBreadcrumbs();
+</script>
+
 <template>
   <div>
     <Header />
     <main>
-      <BreadCrumbs />
+      <ClientOnly>
+        <Breadcrumbs
+          v-if="breadcrumbs.length"
+          :items="breadcrumbs"
+        />
+      </ClientOnly>
       <slot />
     </main>
   </div>

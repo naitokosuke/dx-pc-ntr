@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { NuxtRoute, RoutesNamesList } from "@typed-router";
+import type { BreadcrumbItem } from "~/composables/useBreadcrumbs";
 
 const { items } = defineProps<{
-  items: { to?: NuxtRoute<RoutesNamesList, string>; i18nKey: string }[];
+  items: BreadcrumbItem[];
 }>();
 </script>
 
