@@ -5,10 +5,8 @@ import { routesNames } from "@typed-router";
 const route = useRoute();
 const { t } = useI18n();
 
-// @nuxtjs/i18n が locale サフィックスを追加するときに使用する separator
+// FIXME: IS THERE AN ANOTHER WAY!?
 const LOCALE_SUFFIX_PATTERN = /___[a-z]+$/;
-
-// locale サフィックスを削除する
 function stripLocaleSuffix(name: string | symbol | null | undefined): string {
   if (!name || typeof name === "symbol") return "";
   return name.toString().replace(LOCALE_SUFFIX_PATTERN, "");
@@ -18,6 +16,7 @@ function isRouteName(name: string): name is RoutesNamesList {
   return Object.values(routesNames).some(routeName => routeName === name);
 }
 
+// FIXME: REDUNDANT & UGLY
 function buildRoute(name: RoutesNamesList): RoutesNamedLocations | undefined {
   const { params } = route;
 
@@ -42,17 +41,19 @@ function buildRoute(name: RoutesNamesList): RoutesNamedLocations | undefined {
   }
 }
 
+// FIXME: REDUNDANT & UGLY
 function getRouteI18nKey(name: RoutesNamesList): string {
   switch (name) {
-    case "index": return "common.home";
+    case "index": return "pages.dashboard";
     case "archived": return "pages.archived";
-    case "projects": return "pages.projects";
+    case "projects": return "pages.projects.list";
     case "projects-new": return "pages.projects.new";
     case "search": return "pages.search";
-    case "tags": return "pages.tags";
-    case "todos": return "pages.todos";
+    case "tags": return "pages.tags.list";
+    case "todos": return "pages.todos.list";
     case "todos-new": return "pages.todos.new";
 
+    // NOTE: Parameterized routes use param values directly as labels, so no i18n key needed
     case "projects-projectId": return "";
     case "projects-projectId-settings": return "";
     case "tags-tag": return "";
@@ -69,7 +70,7 @@ const breadcrumbs = computed<{
   label: string;
   to?: RoutesNamedLocations;
 }[]>(() => [
-  { label: t("common.home"), to: { name: "index" } },
+  { label: t("pages.dashboard"), to: { name: "index" } },
   ...route.matched
     .map(matchedRoute => stripLocaleSuffix(matchedRoute.name))
     .filter((name): name is RoutesNamesList => name !== "" && name !== "index" && isRouteName(name))
