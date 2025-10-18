@@ -8,5 +8,7 @@ ignorePaths:
   - "*.log"
 words:
   - naitokosuke
+  - nuxi
   - nuxt
   - oxlint
+  - pinia
