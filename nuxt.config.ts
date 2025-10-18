@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxt/eslint", "@pinia/nuxt", "@pinia/colada-nuxt"],
+  modules: [
+    "@nuxt/eslint",
+    "@pinia/nuxt",
+    "@pinia/colada-nuxt",
+    "nuxt-typed-router",
+  ],
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   devServer: {
