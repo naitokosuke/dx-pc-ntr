@@ -2,7 +2,7 @@ import type { NuxtRoute, RoutesNamesList } from "@typed-router";
 
 export interface BreadcrumbItem {
   to?: NuxtRoute<RoutesNamesList, string>;
-  i18nKey: string;
+  label: string;
 }
 
 const breadcrumbs = ref<BreadcrumbItem[]>([]);

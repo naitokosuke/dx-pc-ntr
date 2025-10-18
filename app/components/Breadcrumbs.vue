@@ -17,7 +17,7 @@ const { items } = defineProps<{
         :key="index"
       >
         <Breadcrumb :to="item.to">
-          {{ $t(item.i18nKey) }}
+          {{ item.label }}
         </Breadcrumb>
         <Icon
           v-if="index < items.length - 1"

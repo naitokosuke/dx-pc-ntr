@@ -1,11 +1,8 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 
-onMounted(() => {
-  setBreadcrumbs([
-    { i18nKey: "pages.dashboard" },
-  ]);
-});
+setBreadcrumbs([{ label: t("pages.dashboard") }]);
 </script>
 
 <template>
