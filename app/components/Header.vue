@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import type { RoutesNamesList } from "@typed-router";
+import { routesNames } from "@typed-router";
+
 const { t } = useI18n();
 
-const navLinks = [
-  { path: "/", label: t("pages.dashboard") },
-  { path: "/projects", label: t("pages.projects.list") },
-  { path: "/todos", label: t("pages.todos.list") },
-  { path: "/tags", label: t("pages.tags.list") },
-  { path: "/search", label: t("pages.search") },
-  { path: "/archived", label: t("pages.archived") },
+const navLinks: { name: RoutesNamesList; label: string }[] = [
+  { name: routesNames.index, label: t("pages.dashboard") },
+  { name: routesNames.projects, label: t("pages.projects.list") },
+  { name: routesNames.todos, label: t("pages.todos.list") },
+  { name: routesNames.tags, label: t("pages.tags.list") },
+  { name: routesNames.search, label: t("pages.search") },
+  { name: routesNames.archived, label: t("pages.archived") },
 ];
 </script>
 
@@ -22,8 +25,8 @@ const navLinks = [
       <nav class="main-nav">
         <NuxtLinkLocale
           v-for="link in navLinks"
-          :key="link.path"
-          :to="link.path"
+          :key="link.name"
+          :to="{ name: link.name }"
         >
           {{ link.label }}
         </NuxtLinkLocale>
