@@ -5,7 +5,7 @@ const { locale, locales, setLocale } = useI18n();
 const isOpen = ref(false);
 
 const currentLocale = computed(() => {
-  return locales.value.find((l) => l.code === locale.value);
+  return locales.value.find(l => l.code === locale.value);
 });
 
 const switchLocale = async (code: GeneratedTypeConfig["locale"]) => {
@@ -17,7 +17,6 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-// クリック外側で閉じる
 const dropdown = ref<HTMLElement | null>(null);
 onClickOutside(dropdown, () => {
   isOpen.value = false;
@@ -25,8 +24,14 @@ onClickOutside(dropdown, () => {
 </script>
 
 <template>
-  <div ref="dropdown" class="lang-select">
-    <button class="current-lang" @click="toggleDropdown">
+  <div
+    ref="dropdown"
+    class="lang-select"
+  >
+    <button
+      class="current-lang"
+      @click="toggleDropdown"
+    >
       <Icon name="material-symbols:language" />
       {{ currentLocale?.name }}
       <Icon
@@ -34,7 +39,10 @@ onClickOutside(dropdown, () => {
       />
     </button>
     <Transition name="dropdown">
-      <ul v-if="isOpen" class="dropdown-menu">
+      <ul
+        v-if="isOpen"
+        class="dropdown-menu"
+      >
         <li
           v-for="loc in locales"
           :key="loc.code"
