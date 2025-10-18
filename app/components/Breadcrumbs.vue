@@ -1,6 +1,26 @@
-<script setup lang="ts">
-import type { BreadcrumbItem } from "~/composables/useBreadcrumbs";
+<script lang="ts">
+import type { NuxtRoute, RoutesNamesList } from "@typed-router";
 
+export interface BreadcrumbItem {
+  to?: NuxtRoute<RoutesNamesList, string>;
+  label: string;
+}
+
+const breadcrumbs = ref<BreadcrumbItem[]>([]);
+
+export const useBreadcrumbs = () => {
+  const setBreadcrumbs = (_breadcrumbs: BreadcrumbItem[]) => {
+    breadcrumbs.value = _breadcrumbs;
+  };
+
+  return {
+    breadcrumbs: computed(() => breadcrumbs.value),
+    setBreadcrumbs,
+  };
+};
+</script>
+
+<script setup lang="ts">
 const { items } = defineProps<{
   items: BreadcrumbItem[];
 }>();

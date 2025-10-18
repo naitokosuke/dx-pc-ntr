@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
+
 const { breadcrumbs } = useBreadcrumbs();
 </script>
 
