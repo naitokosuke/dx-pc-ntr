@@ -1,5 +1,6 @@
 common:
   appName: Todo App
+  home: Home
   error: An error occurred
 
 pages:

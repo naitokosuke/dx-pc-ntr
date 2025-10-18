@@ -1,5 +1,6 @@
 common:
   appName: Todoアプリ
+  home: ホーム
   error: エラーが発生しました
 
 pages:
