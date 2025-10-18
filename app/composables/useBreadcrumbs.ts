@@ -5,7 +5,7 @@ export interface BreadcrumbItem {
   label: string;
 }
 
-const breadcrumbs = ref<BreadcrumbItem[]>([]);
+const breadcrumbs = ref<BreadcrumbItem[]>();
 
 export const useBreadcrumbs = () => {
   const setBreadcrumbs = (_breadcrumbs: BreadcrumbItem[]) => {
