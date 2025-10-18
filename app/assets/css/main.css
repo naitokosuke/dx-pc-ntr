@@ -1,4 +1,13 @@
+@import "./colors.css";
+
 body {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
 }

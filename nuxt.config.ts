@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     "nuxt-typed-router",
     "@nuxtjs/i18n",
     "@nuxt/icon",
+    "@vueuse/nuxt",
   ],
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],

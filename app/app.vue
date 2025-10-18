@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h1>{{ $t("common.appName") }}</h1>
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>

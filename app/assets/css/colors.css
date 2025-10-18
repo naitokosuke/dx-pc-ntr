@@ -1,0 +1,21 @@
+:root {
+  /* Brand Colors - 基調となる3色 */
+  --color-pinia-green: #42d392;
+  --color-pinia-yellow: #ffd859;
+  --color-nuxt-navy: #091a28;
+
+  /* Base Colors */
+  --color-background: var(--color-nuxt-navy);
+  --color-surface: #0a1f30;
+  --color-surface-hover: #0d2538;
+  --color-text: #fff;
+  --color-text-secondary: #a0aec0;
+
+  /* Border Colors */
+  --color-border: #0d2538;
+  --color-border-light: #1a3a50;
+
+  /* Semantic Colors */
+  --color-primary: var(--color-pinia-green);
+  --color-secondary: var(--color-pinia-yellow);
+}
