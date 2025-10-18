@@ -17,7 +17,7 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const dropdown = ref<HTMLElement | null>(null);
+const dropdown = useTemplateRef<HTMLElement>("dropdown");
 onClickOutside(dropdown, () => {
   isOpen.value = false;
 });

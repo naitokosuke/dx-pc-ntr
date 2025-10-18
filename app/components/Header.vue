@@ -16,10 +16,10 @@ header {
   align-items: center;
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--color-border);
-}
 
-nav {
-  display: grid;
-  gap: 1rem;
+  nav {
+    display: grid;
+    gap: 1rem;
+  }
 }
 </style>
