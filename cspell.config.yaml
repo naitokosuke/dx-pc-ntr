@@ -7,6 +7,7 @@ ignorePaths:
   - pnpm-lock.yaml
   - "*.log"
 words:
+  - intlify
   - naitokosuke
   - nuxi
   - nuxt
