@@ -1,0 +1,12 @@
+version: "0.2"
+ignorePaths:
+  - node_modules
+  - .nuxt
+  - .output
+  - dist
+  - pnpm-lock.yaml
+  - "*.log"
+words:
+  - naitokosuke
+  - nuxt
+  - oxlint
