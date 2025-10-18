@@ -1,5 +1,6 @@
 <template>
   <div>
-    <h1>ナイトウコウスケ</h1>
+    <h1>{{ $t("common.appName") }}</h1>
+    <NuxtPage />
   </div>
 </template>

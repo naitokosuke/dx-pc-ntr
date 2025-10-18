@@ -1,2 +1,21 @@
 common:
   appName: Todoアプリ
+  error: エラーが発生しました
+
+pages:
+  dashboard: ダッシュボード
+  todos:
+    list: TODO一覧
+    new: TODO作成
+    detail: TODO詳細
+    edit: TODO編集
+  projects:
+    list: プロジェクト一覧
+    new: プロジェクト作成
+    todos: プロジェクト配下のTODO一覧
+    settings: プロジェクト設定
+  tags:
+    list: タグ一覧
+    todos: タグ別TODO一覧
+  search: 全体横断検索
+  archived: アーカイブ一覧

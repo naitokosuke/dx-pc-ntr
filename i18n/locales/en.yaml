@@ -1,2 +1,21 @@
 common:
   appName: Todo App
+  error: An error occurred
+
+pages:
+  dashboard: Dashboard
+  todos:
+    list: Todo List
+    new: Create Todo
+    detail: Todo Details
+    edit: Edit Todo
+  projects:
+    list: Projects
+    new: Create Project
+    todos: Project Todos
+    settings: Project Settings
+  tags:
+    list: Tags
+    todos: Todos by Tag
+  search: Search
+  archived: Archived
