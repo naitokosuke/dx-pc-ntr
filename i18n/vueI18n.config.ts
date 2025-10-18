@@ -1,4 +1,4 @@
-export default {
+export default defineI18nConfig(() => ({
   legacy: false,
   locale: "ja",
   fallbackLocale: "ja",
@@ -20,4 +20,4 @@ export default {
       currency: { style: "currency", currency: "USD" },
     },
   },
-};
+}));
