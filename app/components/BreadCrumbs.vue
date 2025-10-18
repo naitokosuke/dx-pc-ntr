@@ -22,13 +22,11 @@ const breadcrumbs = computed<BreadCrumb[]>(() => {
     ? pathSegments.slice(1)
     : pathSegments;
 
-  const localePrefix = hasLocalePrefix ? `/${firstSegment}` : "";
-
-  const breadcrumbs: BreadCrumb[] = [{ label: t("common.home"), path: localePrefix || "/" }];
+  const breadcrumbs: BreadCrumb[] = [{ label: t("common.home"), path: "/" }];
 
   if (filteredSegments.length === 0) return breadcrumbs;
 
-  let currentPath = localePrefix;
+  let currentPath = "";
   filteredSegments.forEach((segment, index) => {
     currentPath += `/${segment}`;
 
@@ -76,12 +74,12 @@ const breadcrumbs = computed<BreadCrumb[]>(() => {
         v-for="(bc, index) in breadcrumbs"
         :key="bc.path || bc.label"
       >
-        <NuxtLink
+        <NuxtLinkLocale
           v-if="bc.path"
           :to="bc.path"
         >
           {{ bc.label }}
-        </NuxtLink>
+        </NuxtLinkLocale>
         <span
           v-else
           aria-current="page"
