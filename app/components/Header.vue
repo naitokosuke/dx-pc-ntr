@@ -4,14 +4,14 @@ import { routesNames } from "@typed-router";
 
 const { t } = useI18n();
 
-const navLinks: { name: RoutesNamesList; label: string }[] = [
+const navLinks = computed<{ name: RoutesNamesList; label: string }[]>(() => [
   { name: routesNames.index, label: t("pages.dashboard") },
   { name: routesNames.projects, label: t("pages.projects.list") },
   { name: routesNames.todos, label: t("pages.todos.list") },
   { name: routesNames.tags, label: t("pages.tags.list") },
   { name: routesNames.search, label: t("pages.search") },
   { name: routesNames.archived, label: t("pages.archived") },
-];
+]);
 </script>
 
 <template>
