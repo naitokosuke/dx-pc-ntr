@@ -29,27 +29,37 @@ onClickOutside(dropdown, () => {
     class="lang-select"
   >
     <button
-      class="current-lang"
+      type="button"
+      aria-haspopup="menu"
+      :aria-expanded="isOpen"
+      aria-label="Choose language"
       @click="toggleDropdown"
     >
-      <Icon name="material-symbols:language" />
-      {{ currentLocale?.name }}
+      <Icon
+        name="material-symbols:language"
+        aria-hidden="true"
+      />
+      <span>{{ currentLocale?.name }}</span>
       <Icon
         :name="isOpen ? 'material-symbols:arrow-drop-up' : 'material-symbols:arrow-drop-down'"
+        aria-hidden="true"
       />
     </button>
     <Transition name="dropdown">
       <ul
         v-if="isOpen"
-        class="dropdown-menu"
+        role="menu"
+        aria-label="Language options"
       >
         <li
-          v-for="loc in locales"
-          :key="loc.code"
-          :class="{ active: loc.code === locale }"
-          @click="switchLocale(loc.code)"
+          v-for="l in locales"
+          :key="l.code"
+          role="menuitem"
+          :aria-current="l.code === locale ? 'page' : undefined"
+          :class="{ active: l.code === locale }"
+          @click="switchLocale(l.code)"
         >
-          {{ loc.name }}
+          {{ l.name }}
         </li>
       </ul>
     </Transition>
@@ -59,57 +69,57 @@ onClickOutside(dropdown, () => {
 <style scoped>
 .lang-select {
   position: relative;
-}
 
-.current-lang {
-  display: grid;
-  grid-auto-flow: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.375rem;
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
+  button {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background-color 0.2s;
 
-.current-lang:hover {
-  background-color: var(--color-surface-hover);
-}
+    &:hover {
+      background-color: var(--color-surface-hover);
+    }
+  }
 
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 0.25rem);
-  right: 0;
-  min-width: 150px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
-  list-style: none;
-  padding: 0.25rem;
-  margin: 0;
-  z-index: 50;
-}
+  ul {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    width: fit-content;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+    list-style: none;
+    padding: 0.25rem;
+    margin: 0;
+    z-index: 50;
 
-.dropdown-menu li {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s;
-  color: var(--color-text);
-}
+    li {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s;
+      color: var(--color-text);
 
-.dropdown-menu li:hover {
-  background-color: var(--color-surface-hover);
-}
+      &:hover {
+        background-color: var(--color-surface-hover);
+      }
 
-.dropdown-menu li.active {
-  background-color: var(--color-primary);
-  color: var(--color-background);
-  font-weight: 500;
+      &.active {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        font-weight: 500;
+      }
+    }
+  }
 }
 
 .dropdown-enter-active,
