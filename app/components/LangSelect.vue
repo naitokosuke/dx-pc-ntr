@@ -2,19 +2,16 @@
 import type { GeneratedTypeConfig } from "@intlify/core-base";
 
 const { locale, locales, setLocale } = useI18n();
-const isOpen = ref(false);
 
 const currentLocale = computed(() => {
   return locales.value.find(l => l.code === locale.value);
 });
 
+const isOpen = ref(false);
+
 const switchLocale = async (code: GeneratedTypeConfig["locale"]) => {
   await setLocale(code);
   isOpen.value = false;
-};
-
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
 };
 
 const dropdown = useTemplateRef<HTMLElement>("dropdown");
@@ -33,7 +30,7 @@ onClickOutside(dropdown, () => {
       aria-haspopup="menu"
       :aria-expanded="isOpen"
       aria-label="Choose language"
-      @click="toggleDropdown"
+      @click="isOpen = !isOpen"
     >
       <Icon
         name="material-symbols:language"
