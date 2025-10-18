@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     "@pinia/colada-nuxt",
     "nuxt-typed-router",
     "@nuxtjs/i18n",
+    "@nuxt/icon",
   ],
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
