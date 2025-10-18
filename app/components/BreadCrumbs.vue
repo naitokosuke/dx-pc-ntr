@@ -73,20 +73,20 @@ const breadcrumbs = computed<BreadCrumb[]>(() => {
   >
     <ol>
       <li
-        v-for="(crumb, index) in breadcrumbs"
-        :key="crumb.path || crumb.label"
+        v-for="(bc, index) in breadcrumbs"
+        :key="bc.path || bc.label"
       >
         <NuxtLink
-          v-if="crumb.path"
-          :to="crumb.path"
+          v-if="bc.path"
+          :to="bc.path"
         >
-          {{ crumb.label }}
+          {{ bc.label }}
         </NuxtLink>
         <span
           v-else
           aria-current="page"
         >
-          {{ crumb.label }}
+          {{ bc.label }}
         </span>
         <Icon
           v-if="index < breadcrumbs.length - 1"
