@@ -7,21 +7,13 @@ const { setBreadcrumbs } = useBreadcrumbs();
 
 setBreadcrumbs([{ label: t("pages.dashboard") }]);
 
-const { data, isLoading, error } = useQuery({
-  key: ["dashboard", "summary"],
-  query: async () => {
-    const response = await $fetch("/api/dashboard/summary");
-    return response;
-  },
+const { state, asyncStatus } = useQuery({
+  key: ["dashboard"],
+  query: () => $fetch("/api/dashboard/summary"),
 });
 
-const getStatusLabel = (status: string) => {
-  return t(`dashboard.status.${status}`);
-};
-
-const getPriorityLabel = (priority: string) => {
-  return t(`dashboard.priority.${priority}`);
-};
+const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
+const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
@@ -45,48 +37,46 @@ const formatRelativeDate = (dateStr: string) => {
 <template>
   <div class="dashboard">
     <div
-      v-if="isLoading"
+      v-if="asyncStatus === 'loading'"
       class="status-message"
     >
       {{ $t("common.loading") }}
     </div>
 
     <div
-      v-else-if="error"
+      v-else-if="state.error"
       class="status-message error"
     >
-      {{ $t("dashboard.error.message", { message: error.message }) }}
+      {{ $t("dashboard.error.message", { message: state.error.message }) }}
     </div>
 
     <div
-      v-else-if="data"
+      v-else-if="state.data"
       class="content"
     >
-      <!-- サマリー統計 -->
       <section class="stats">
         <h3>{{ $t("dashboard.summary.title") }}</h3>
         <div class="cards">
           <Card
             :label="$t('dashboard.summary.totalTodos')"
-            :value="data.summary.totalTodos"
+            :value="state.data.summary.totalTodos"
           />
           <Card
             :label="$t('dashboard.summary.totalProjects')"
-            :value="data.summary.totalProjects"
+            :value="state.data.summary.totalProjects"
           />
           <Card
             :label="$t('dashboard.summary.totalTags')"
-            :value="data.summary.totalTags"
+            :value="state.data.summary.totalTags"
           />
         </div>
       </section>
 
-      <!-- ステータス統計 -->
       <section class="stats">
         <h3>{{ $t("dashboard.status.title") }}</h3>
         <div class="cards">
           <Card
-            v-for="(count, status) in data.todosByStatus"
+            v-for="(count, status) in state.data.todosByStatus"
             :key="status"
             :label="getStatusLabel(status as string)"
             :value="count"
@@ -94,12 +84,11 @@ const formatRelativeDate = (dateStr: string) => {
         </div>
       </section>
 
-      <!-- 優先度統計 -->
       <section class="stats">
         <h3>{{ $t("dashboard.priority.title") }}</h3>
         <div class="cards">
           <Card
-            v-for="(count, priority) in data.todosByPriority"
+            v-for="(count, priority) in state.data.todosByPriority"
             :key="priority"
             :label="getPriorityLabel(priority as string)"
             :value="count"
@@ -107,18 +96,17 @@ const formatRelativeDate = (dateStr: string) => {
         </div>
       </section>
 
-      <!-- 最近のTODO -->
       <section class="todos">
         <h3>{{ $t("dashboard.recentTodos.title") }}</h3>
         <div
-          v-if="data.recentTodos.length === 0"
+          v-if="state.data.recentTodos.length === 0"
           class="empty"
         >
           {{ $t("dashboard.recentTodos.empty") }}
         </div>
         <ul v-else>
           <li
-            v-for="todo in data.recentTodos"
+            v-for="todo in state.data.recentTodos"
             :key="todo.id"
           >
             <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
@@ -135,18 +123,17 @@ const formatRelativeDate = (dateStr: string) => {
         </ul>
       </section>
 
-      <!-- 期限の近いTODO -->
       <section class="todos">
         <h3>{{ $t("dashboard.upcomingTodos.title") }}</h3>
         <div
-          v-if="data.upcomingTodos.length === 0"
+          v-if="state.data.upcomingTodos.length === 0"
           class="empty"
         >
           {{ $t("dashboard.upcomingTodos.empty") }}
         </div>
         <ul v-else>
           <li
-            v-for="todo in data.upcomingTodos"
+            v-for="todo in state.data.upcomingTodos"
             :key="todo.id"
           >
             <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
