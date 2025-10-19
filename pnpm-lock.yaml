@@ -57,6 +57,9 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
     devDependencies:
+      '@pinia/colada-devtools':
+        specifier: ^0.1.7
+        version: 0.1.7
       eslint-plugin-oxlint:
         specifier: ^1.22.0
         version: 1.22.0
@@ -1313,6 +1316,9 @@ packages:
   '@parcel/watcher@2.5.1':
     resolution: {integrity: sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==}
     engines: {node: '>= 10.0.0'}
+
+  '@pinia/colada-devtools@0.1.7':
+    resolution: {integrity: sha512-WWp95C+HxPSf9KWOVNzQVUW+46oJizQxLCcZjsBEqk6q32jQNB99P2Wu3egFrWoEQUkptR5aD3eKrqAZ6N1MeA==}
 
   '@pinia/colada-nuxt@0.2.3':
     resolution: {integrity: sha512-JtyrwnoMV0MAnraMNhPJjO5OLQvtHRCHrer+XuVp7Wb9ZxpagwfCAax8tITAAxaablJ4t62PleU3K1NKJdzY7w==}
@@ -6198,6 +6204,8 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.5.1
       '@parcel/watcher-win32-ia32': 2.5.1
       '@parcel/watcher-win32-x64': 2.5.1
+
+  '@pinia/colada-devtools@0.1.7': {}
 
   '@pinia/colada-nuxt@0.2.3(@pinia/colada@0.17.6(pinia@3.0.3(typescript@5.9.3)(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)))(magicast@0.3.5)':
     dependencies:

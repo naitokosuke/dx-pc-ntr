@@ -39,6 +39,7 @@
     }
   },
   "devDependencies": {
+    "@pinia/colada-devtools": "^0.1.7",
     "eslint-plugin-oxlint": "^1.22.0",
     "oxlint": "^1.22.0",
     "typescript": "^5.9.3",
