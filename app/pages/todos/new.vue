@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import type { TodoPriority } from "#shared/schemas/todo.schema";
-import { useCreateTodoMutation } from "~/mutations/useTodoMutation";
+import { useCreateTodo } from "~/mutations/todos";
 
 interface FormData {
   title: string;
@@ -30,7 +30,7 @@ const form = ref<FormData>({
   tags: [],
 });
 
-const { mutate, asyncStatus } = useCreateTodoMutation();
+const { mutate, asyncStatus } = useCreateTodo();
 
 const handleSubmit = () => {
   mutate(form.value);

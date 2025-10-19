@@ -1,31 +1,34 @@
 import { useMutation, useQueryCache } from "@pinia/colada";
-import type { TodoPriority } from "#shared/schemas/todo.schema";
+import type { TodoPriority, TodoStatus } from "#shared/schemas/todo.schema";
 import { todosKeys, dashboardKeys } from "~/queries/queryKeys";
 
-export interface CreateTodoData {
-  title: string;
+export interface UpdateTodoData {
+  title?: string;
   description?: string;
+  status?: TodoStatus;
   priority?: TodoPriority;
   dueDate?: string;
   tags?: string[];
 }
 
-export function useCreateTodoMutation() {
+export function useUpdateTodo() {
   const queryCache = useQueryCache();
 
   return useMutation({
-    mutation: async (data: CreateTodoData) => {
+    mutation: async ({ id, data }: { id: string; data: UpdateTodoData }) => {
       const payload = {
         ...data,
         dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
       };
-      return await $fetch("/api/todos", {
-        method: "POST",
+      return await $fetch("/api/todos/:id", {
+        method: "PUT",
+        params: { id },
         body: payload,
       });
     },
-    onSettled: () => {
+    onSettled: (_data, _error, variables) => {
       queryCache.invalidateQueries({ key: todosKeys.root });
+      queryCache.invalidateQueries({ key: todosKeys.byId(variables.id) });
       queryCache.invalidateQueries({ key: dashboardKeys.root });
     },
   });

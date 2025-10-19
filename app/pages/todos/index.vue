@@ -3,7 +3,7 @@ import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
 import type { TodoStatus, TodoPriority } from "#shared/schemas/todo.schema";
 import { formatDate, formatRelativeDate } from "~/utils/date";
-import { useCreateTodoMutation } from "~/mutations/useTodoMutation";
+import { useCreateTodo, useDeleteTodo, useCompleteTodo } from "~/mutations/todos";
 import { todosKeys } from "~/queries/queryKeys";
 
 const route = useRoute("todos");
@@ -55,12 +55,22 @@ watch(queryParams, (newParams) => {
 });
 
 const quickAddTitle = ref("");
-const { mutate: createTodo, asyncStatus: createStatus } = useCreateTodoMutation();
+const { mutate: createTodo, asyncStatus: createStatus } = useCreateTodo();
+const { mutate: deleteTodo, asyncStatus: deleteStatus } = useDeleteTodo();
+const { mutate: completeTodo, asyncStatus: completeStatus } = useCompleteTodo();
 
 const handleQuickAdd = () => {
   if (!quickAddTitle.value.trim()) return;
   createTodo({ title: quickAddTitle.value.trim() });
   quickAddTitle.value = "";
+};
+
+const handleDelete = (id: string) => {
+  deleteTodo(id);
+};
+
+const handleComplete = (id: string, currentStatus: TodoStatus) => {
+  completeTodo({ id, currentStatus });
 };
 </script>
 
@@ -173,8 +183,27 @@ const handleQuickAdd = () => {
       <li
         v-for="todo in todos.data"
         :key="todo.id"
+        :class="{ completed: todo.status === 'completed' }"
       >
-        <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
+        <div class="todo-actions">
+          <input
+            type="checkbox"
+            :checked="todo.status === 'completed'"
+            :disabled="completeStatus === 'loading'"
+            @change="handleComplete(todo.id, todo.status)"
+          >
+          <button
+            class="delete-button"
+            :disabled="deleteStatus === 'loading'"
+            @click="handleDelete(todo.id)"
+          >
+            {{ $t("todos.actions.delete") }}
+          </button>
+        </div>
+        <NuxtLinkLocale
+          :to="{ name: 'todos-id', params: { id: todo.id } }"
+          class="todo-content"
+        >
           <div class="todo-main">
             <strong>{{ todo.title }}</strong>
             <div class="todo-badges">
@@ -328,17 +357,67 @@ const handleQuickAdd = () => {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 0.5rem;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
 
       &:hover {
         background: var(--color-surface-hover);
         border-color: var(--color-border-light);
       }
 
-      a {
+      &.completed {
+        opacity: 0.6;
+
+        .todo-content strong {
+          text-decoration: line-through;
+        }
+      }
+
+      .todo-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.25rem;
+        align-items: center;
+
+        input[type="checkbox"] {
+          width: 1.25rem;
+          height: 1.25rem;
+          cursor: pointer;
+
+          &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
+        }
+
+        .delete-button {
+          padding: 0.25rem 0.5rem;
+          background: var(--color-error);
+          color: white;
+          border: none;
+          border-radius: 0.25rem;
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: opacity 0.2s;
+
+          &:hover:not(:disabled) {
+            opacity: 0.9;
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .todo-content {
         display: grid;
         gap: 0.75rem;
-        padding: 1.25rem;
+        padding: 1.25rem 1.25rem 1.25rem 0;
         text-decoration: none;
         color: inherit;
 
