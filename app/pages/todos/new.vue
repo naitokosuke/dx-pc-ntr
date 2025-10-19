@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
-import { useMutation } from "@pinia/colada";
+import { useMutation, useQueryCache } from "@pinia/colada";
 import type { TodoPriority } from "#shared/schemas/todo.schema";
+
+interface FormData {
+  title: string;
+  description: string;
+  priority: TodoPriority;
+  dueDate: string;
+  tags: string[];
+}
 
 const { t } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
@@ -14,13 +22,7 @@ setBreadcrumbs([
   { label: t("pages.todos.new") },
 ]);
 
-const form = ref<{
-  title: string;
-  description: string;
-  priority: TodoPriority;
-  dueDate: string;
-  tags: string[];
-}>({
+const form = shallowRef<FormData>({
   title: "",
   description: "",
   priority: "medium",
@@ -30,8 +32,9 @@ const form = ref<{
 
 const tagInput = ref("");
 
+const queryCache = useQueryCache();
 const { mutate, asyncStatus } = useMutation({
-  mutation: async (data: typeof form.value) => {
+  mutation: async (data: FormData) => {
     const payload = {
       ...data,
       dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
@@ -43,6 +46,10 @@ const { mutate, asyncStatus } = useMutation({
   },
   onSuccess: () => {
     router.push(localePath({ name: "todos" }));
+  },
+  onSettled: () => {
+    queryCache.invalidateQueries({ key: ["todos"] });
+    queryCache.invalidateQueries({ key: ["dashboard"] });
   },
 });
 
