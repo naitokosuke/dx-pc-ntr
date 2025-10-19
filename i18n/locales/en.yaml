@@ -3,6 +3,8 @@ common:
   home: Home
   error: An error occurred
   loading: Loading...
+  creating: Creating...
+  cancel: Cancel
 
 pages:
   dashboard: Dashboard
@@ -64,3 +66,11 @@ todos:
     clear: Clear filters
   empty: No todos found
   createNew: Create New Todo
+  form:
+    title: Title
+    description: Description
+    priority: Priority
+    dueDate: Due Date
+    tags: Tags
+    addTag: Add
+    create: Create

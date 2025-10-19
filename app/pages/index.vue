@@ -92,7 +92,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
             v-for="todo in state.data.recentTodos"
             :key="todo.id"
           >
-            <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
+            <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
               <div>
                 <strong>{{ todo.title }}</strong>
                 <span>{{ getPriorityLabel(todo.priority) }}</span>
@@ -101,7 +101,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
                 <span>{{ getStatusLabel(todo.status) }}</span>
                 <span>{{ formatDate(todo.createdAt, locale, { year: "numeric", month: "long", day: "numeric" }) }}</span>
               </div>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </li>
         </ul>
       </section>
@@ -119,7 +119,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
             v-for="todo in state.data.upcomingTodos"
             :key="todo.id"
           >
-            <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
+            <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
               <div>
                 <strong>{{ todo.title }}</strong>
                 <span>{{ getPriorityLabel(todo.priority) }}</span>
@@ -128,7 +128,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
                 <span>{{ getStatusLabel(todo.status) }}</span>
                 <span>{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
               </div>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </li>
         </ul>
       </section>

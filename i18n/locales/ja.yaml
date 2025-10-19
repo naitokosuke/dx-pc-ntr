@@ -3,6 +3,8 @@ common:
   home: ホーム
   error: エラーが発生しました
   loading: 読み込み中...
+  creating: 作成中...
+  cancel: キャンセル
 
 pages:
   dashboard: ダッシュボード
@@ -64,3 +66,11 @@ todos:
     clear: フィルタをクリア
   empty: TODOが見つかりません
   createNew: 新規TODO作成
+  form:
+    title: タイトル
+    description: 説明
+    priority: 優先度
+    dueDate: 期限
+    tags: タグ
+    addTag: 追加
+    create: 作成

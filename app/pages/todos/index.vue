@@ -56,12 +56,12 @@ watch(queryParams, (newParams) => {
 <template>
   <div class="todos-page">
     <div class="header">
-      <NuxtLink
-        to="/todos/new"
+      <NuxtLinkLocale
+        :to="{ name: 'todos-new' }"
         class="create-button"
       >
         {{ $t("todos.createNew") }}
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
 
     <section class="filters">
@@ -146,7 +146,7 @@ watch(queryParams, (newParams) => {
         v-for="todo in todos.data"
         :key="todo.id"
       >
-        <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
+        <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
           <div class="todo-main">
             <strong>{{ todo.title }}</strong>
             <div class="todo-badges">
@@ -165,7 +165,7 @@ watch(queryParams, (newParams) => {
             <span v-if="todo.dueDate">{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
             <span v-if="todo.tags.length > 0">{{ todo.tags.join(", ") }}</span>
           </div>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </li>
     </ul>
   </div>
