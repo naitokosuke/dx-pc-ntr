@@ -1,5 +1,6 @@
 import { useMutation, useQueryCache } from "@pinia/colada";
 import type { TodoPriority } from "#shared/schemas/todo.schema";
+import { todosKeys, dashboardKeys } from "~/queries/queryKeys";
 
 export interface CreateTodoData {
   title: string;
@@ -24,8 +25,8 @@ export function useCreateTodoMutation() {
       });
     },
     onSettled: () => {
-      queryCache.invalidateQueries({ key: ["todos"] });
-      queryCache.invalidateQueries({ key: ["dashboard"] });
+      queryCache.invalidateQueries({ key: todosKeys.root });
+      queryCache.invalidateQueries({ key: dashboardKeys.root });
     },
   });
 }

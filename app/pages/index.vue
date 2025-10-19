@@ -2,6 +2,7 @@
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
 import { formatDate, formatRelativeDate } from "~/utils/date";
+import { dashboardKeys } from "~/queries/queryKeys";
 
 const { t, locale } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
@@ -9,7 +10,7 @@ const { setBreadcrumbs } = useBreadcrumbs();
 setBreadcrumbs([{ label: t("pages.dashboard") }]);
 
 const { state, asyncStatus } = useQuery({
-  key: ["dashboard"],
+  key: dashboardKeys.root,
   query: () => $fetch("/api/dashboard/summary"),
 });
 

@@ -4,6 +4,7 @@ import { useQuery } from "@pinia/colada";
 import type { TodoStatus, TodoPriority } from "#shared/schemas/todo.schema";
 import { formatDate, formatRelativeDate } from "~/utils/date";
 import { useCreateTodoMutation } from "~/mutations/useTodoMutation";
+import { todosKeys } from "~/queries/queryKeys";
 
 const route = useRoute("todos");
 const router = useRouter();
@@ -36,7 +37,7 @@ const queryParams = computed(() => {
 });
 
 const { state: todos, asyncStatus } = useQuery({
-  key: () => ["todos", queryParams.value],
+  key: () => todosKeys.withFilters(queryParams.value),
   query: () => $fetch("/api/todos", { query: queryParams.value }),
 });
 
