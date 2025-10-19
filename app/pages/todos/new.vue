@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
-import { useMutation, useQueryCache } from "@pinia/colada";
 import type { TodoPriority } from "#shared/schemas/todo.schema";
+import { useCreateTodoMutation } from "~/mutations/useTodoMutation";
 
 interface FormData {
   title: string;
@@ -22,7 +22,7 @@ setBreadcrumbs([
   { label: t("pages.todos.new") },
 ]);
 
-const form = shallowRef<FormData>({
+const form = ref<FormData>({
   title: "",
   description: "",
   priority: "medium",
@@ -30,26 +30,12 @@ const form = shallowRef<FormData>({
   tags: [],
 });
 
-const queryCache = useQueryCache();
-const { mutate, asyncStatus } = useMutation({
-  mutation: async (data: FormData) => {
-    const payload = {
-      ...data,
-      dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
-    };
-    return await $fetch("/api/todos", {
-      method: "POST",
-      body: payload,
-    });
-  },
-  onSuccess: () => {
-    router.push(localePath({ name: "todos" }));
-  },
-  onSettled: () => {
-    queryCache.invalidateQueries({ key: ["todos"] });
-    queryCache.invalidateQueries({ key: ["dashboard"] });
-  },
-});
+const { mutate, asyncStatus } = useCreateTodoMutation();
+
+const handleSubmit = () => {
+  mutate(form.value);
+  router.push(localePath({ name: "todos" }));
+};
 
 const tagInput = ref("");
 const addTag = () => {
@@ -71,7 +57,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
 
     <form
       class="todo-form"
-      @submit.prevent="mutate(form);"
+      @submit.prevent="handleSubmit"
     >
       <div class="form-group">
         <label for="title">{{ $t("todos.form.title") }}</label>

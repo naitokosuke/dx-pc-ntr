@@ -3,6 +3,7 @@ import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
 import type { TodoStatus, TodoPriority } from "#shared/schemas/todo.schema";
 import { formatDate, formatRelativeDate } from "~/utils/date";
+import { useCreateTodoMutation } from "~/mutations/useTodoMutation";
 
 const route = useRoute("todos");
 const router = useRouter();
@@ -51,11 +52,37 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
 watch(queryParams, (newParams) => {
   router.push({ query: newParams });
 });
+
+const quickAddTitle = ref("");
+const { mutate: createTodo, asyncStatus: createStatus } = useCreateTodoMutation();
+
+const handleQuickAdd = () => {
+  if (!quickAddTitle.value.trim()) return;
+  createTodo({ title: quickAddTitle.value.trim() });
+  quickAddTitle.value = "";
+};
 </script>
 
 <template>
   <div class="todos-page">
     <div class="header">
+      <form
+        class="quick-add-form"
+        @submit.prevent="handleQuickAdd"
+      >
+        <input
+          v-model="quickAddTitle"
+          type="text"
+          :placeholder="$t('todos.quickAdd.placeholder')"
+          :disabled="createStatus === 'loading'"
+        >
+        <button
+          type="submit"
+          :disabled="createStatus === 'loading' || !quickAddTitle.trim()"
+        >
+          {{ $t("todos.quickAdd.add") }}
+        </button>
+      </form>
       <NuxtLinkLocale
         :to="{ name: 'todos-new' }"
         class="create-button"
@@ -179,6 +206,49 @@ watch(queryParams, (newParams) => {
     align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
+
+    .quick-add-form {
+      display: flex;
+      gap: 0.5rem;
+
+      input {
+        flex: 1;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-primary);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:hover:not(:disabled) {
+          opacity: 0.9;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
 
     .create-button {
       padding: 0.75rem 1.5rem;

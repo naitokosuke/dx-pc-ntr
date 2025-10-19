@@ -66,6 +66,9 @@ todos:
     clear: Clear filters
   empty: No todos found
   createNew: Create New Todo
+  quickAdd:
+    placeholder: Enter title to quick add
+    add: Add
   form:
     title: Title
     description: Description

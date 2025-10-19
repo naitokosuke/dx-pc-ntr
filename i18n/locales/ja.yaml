@@ -66,6 +66,9 @@ todos:
     clear: フィルタをクリア
   empty: TODOが見つかりません
   createNew: 新規TODO作成
+  quickAdd:
+    placeholder: タイトルを入力して素早く追加
+    add: 追加
   form:
     title: タイトル
     description: 説明
