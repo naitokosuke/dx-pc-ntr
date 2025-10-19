@@ -26,9 +26,8 @@ export function useUpdateTodo() {
         body: payload,
       });
     },
-    onSettled: (_data, _error, variables) => {
+    onSettled: () => {
       queryCache.invalidateQueries({ key: todosKeys.root });
-      queryCache.invalidateQueries({ key: todosKeys.byId(variables.id) });
       queryCache.invalidateQueries({ key: dashboardKeys.root });
     },
   });
