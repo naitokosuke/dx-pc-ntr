@@ -39,18 +39,18 @@ const { state: todos, asyncStatus } = useQuery({
   query: () => $fetch("/api/todos", { query: queryParams.value }),
 });
 
-const applyFilters = () => {
-  router.push({ query: queryParams.value });
-};
 const clearFilters = () => {
   searchQuery.value = "";
   statusFilter.value = "";
   priorityFilter.value = "";
-  router.push({ query: {} });
 };
 
 const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
 const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
+
+watch(queryParams, (newParams) => {
+  router.push({ query: newParams });
+});
 </script>
 
 <template>
@@ -70,13 +70,11 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
         type="text"
         :placeholder="$t('todos.filters.search')"
         class="search-input"
-        @keyup.enter="applyFilters"
       >
 
       <select
         v-model="statusFilter"
         class="filter-select"
-        @change="applyFilters"
       >
         <option value="">
           {{ $t("todos.filters.all") }} ({{ $t("todos.filters.status") }})
@@ -95,7 +93,6 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       <select
         v-model="priorityFilter"
         class="filter-select"
-        @change="applyFilters"
       >
         <option value="">
           {{ $t("todos.filters.all") }} ({{ $t("todos.filters.priority") }})
