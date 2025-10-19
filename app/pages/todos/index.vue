@@ -2,6 +2,7 @@
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
 import type { TodoStatus, TodoPriority } from "#shared/schemas/todo.schema";
+import { formatDate, formatRelativeDate } from "~/utils/date";
 
 const route = useRoute("todos");
 const router = useRouter();
@@ -50,23 +51,6 @@ const clearFilters = () => {
 
 const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
 const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
-
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const localeCode = locale.value === "ja" ? "ja-JP" : "en-US";
-  return date.toLocaleDateString(localeCode, { year: "numeric", month: "2-digit", day: "2-digit" });
-};
-const formatRelativeDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffTime = date.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays < 0) return t("dashboard.date.daysAgo", { days: Math.abs(diffDays) });
-  if (diffDays === 0) return t("dashboard.date.today");
-  if (diffDays === 1) return t("dashboard.date.tomorrow");
-  return t("dashboard.date.daysLater", { days: diffDays });
-};
 </script>
 
 <template>
@@ -180,8 +164,8 @@ const formatRelativeDate = (dateStr: string) => {
             {{ todo.description }}
           </div>
           <div class="todo-meta">
-            <span>{{ formatDate(todo.createdAt) }}</span>
-            <span v-if="todo.dueDate">{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate) }}</span>
+            <span>{{ formatDate(todo.createdAt, locale) }}</span>
+            <span v-if="todo.dueDate">{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
             <span v-if="todo.tags.length > 0">{{ todo.tags.join(", ") }}</span>
           </div>
         </NuxtLink>

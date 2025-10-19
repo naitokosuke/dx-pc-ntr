@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
+import { formatDate, formatRelativeDate } from "~/utils/date";
 
 const { t, locale } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
@@ -14,24 +15,6 @@ const { state, asyncStatus } = useQuery({
 
 const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
 const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
-
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const localeCode = locale.value === "ja" ? "ja-JP" : "en-US";
-  return date.toLocaleDateString(localeCode, { year: "numeric", month: "long", day: "numeric" });
-};
-
-const formatRelativeDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffTime = date.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays < 0) return t("dashboard.date.daysAgo", { days: Math.abs(diffDays) });
-  if (diffDays === 0) return t("dashboard.date.today");
-  if (diffDays === 1) return t("dashboard.date.tomorrow");
-  return t("dashboard.date.daysLater", { days: diffDays });
-};
 </script>
 
 <template>
@@ -116,7 +99,7 @@ const formatRelativeDate = (dateStr: string) => {
               </div>
               <div>
                 <span>{{ getStatusLabel(todo.status) }}</span>
-                <span>{{ formatDate(todo.createdAt) }}</span>
+                <span>{{ formatDate(todo.createdAt, locale, { year: "numeric", month: "long", day: "numeric" }) }}</span>
               </div>
             </NuxtLink>
           </li>
@@ -143,7 +126,7 @@ const formatRelativeDate = (dateStr: string) => {
               </div>
               <div v-if="todo.dueDate">
                 <span>{{ getStatusLabel(todo.status) }}</span>
-                <span>{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate) }}</span>
+                <span>{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
               </div>
             </NuxtLink>
           </li>
