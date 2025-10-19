@@ -30,8 +30,6 @@ const form = shallowRef<FormData>({
   tags: [],
 });
 
-const tagInput = ref("");
-
 const queryCache = useQueryCache();
 const { mutate, asyncStatus } = useMutation({
   mutation: async (data: FormData) => {
@@ -53,13 +51,13 @@ const { mutate, asyncStatus } = useMutation({
   },
 });
 
+const tagInput = ref("");
 const addTag = () => {
   if (tagInput.value.trim() && !form.value.tags.includes(tagInput.value.trim())) {
     form.value.tags.push(tagInput.value.trim());
     tagInput.value = "";
   }
 };
-
 const removeTag = (tag: string) => {
   form.value.tags = form.value.tags.filter(t => t !== tag);
 };
