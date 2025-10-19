@@ -54,3 +54,13 @@ dashboard:
   error:
     title: Error
     message: "Error: {message}"
+
+todos:
+  filters:
+    all: All
+    search: Search
+    status: Status
+    priority: Priority
+    clear: Clear filters
+  empty: No todos found
+  createNew: Create New Todo

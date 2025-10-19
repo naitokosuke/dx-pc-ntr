@@ -54,3 +54,13 @@ dashboard:
   error:
     title: エラー
     message: "エラー: {message}"
+
+todos:
+  filters:
+    all: すべて
+    search: 検索
+    status: ステータス
+    priority: 優先度
+    clear: フィルタをクリア
+  empty: TODOが見つかりません
+  createNew: 新規TODO作成
