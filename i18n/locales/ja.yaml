@@ -2,6 +2,7 @@ common:
   appName: Todoアプリ
   home: ホーム
   error: エラーが発生しました
+  loading: 読み込み中...
 
 pages:
   dashboard: ダッシュボード
@@ -20,3 +21,36 @@ pages:
     todos: タグ別TODO一覧
   search: 全体横断検索
   archived: アーカイブ一覧
+
+dashboard:
+  summary:
+    title: 概要
+    totalTodos: 総TODO数
+    totalProjects: プロジェクト数
+    totalTags: タグ数
+  status:
+    title: ステータス別
+    pending: 未着手
+    in_progress: 進行中
+    completed: 完了
+    archived: アーカイブ
+  priority:
+    title: 優先度別
+    low: 低
+    medium: 中
+    high: 高
+  recentTodos:
+    title: 最近のTODO
+    empty: TODOがありません
+  upcomingTodos:
+    title: 期限の近いTODO
+    empty: 期限付きのTODOがありません
+    dueDate: 期限
+  date:
+    today: 今日
+    tomorrow: 明日
+    daysAgo: "{days}日前"
+    daysLater: "{days}日後"
+  error:
+    title: エラー
+    message: "エラー: {message}"

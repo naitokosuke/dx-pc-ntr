@@ -2,6 +2,7 @@ common:
   appName: Todo App
   home: Home
   error: An error occurred
+  loading: Loading...
 
 pages:
   dashboard: Dashboard
@@ -20,3 +21,36 @@ pages:
     todos: Todos by Tag
   search: Search
   archived: Archived
+
+dashboard:
+  summary:
+    title: Summary
+    totalTodos: Total Todos
+    totalProjects: Projects
+    totalTags: Tags
+  status:
+    title: By Status
+    pending: Pending
+    in_progress: In Progress
+    completed: Completed
+    archived: Archived
+  priority:
+    title: By Priority
+    low: Low
+    medium: Medium
+    high: High
+  recentTodos:
+    title: Recent Todos
+    empty: No todos found
+  upcomingTodos:
+    title: Upcoming Todos
+    empty: No todos with due dates
+    dueDate: Due
+  date:
+    today: Today
+    tomorrow: Tomorrow
+    daysAgo: "{days} days ago"
+    daysLater: "in {days} days"
+  error:
+    title: Error
+    message: "Error: {message}"

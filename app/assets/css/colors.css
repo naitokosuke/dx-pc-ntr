@@ -10,6 +10,7 @@
   --color-surface-hover: #0d2538;
   --color-text: #fff;
   --color-text-secondary: #a0aec0;
+  --color-text-muted: #718096;
 
   /* Border Colors */
   --color-border: #0d2538;
@@ -18,4 +19,10 @@
   /* Semantic Colors */
   --color-primary: var(--color-pinia-green);
   --color-secondary: var(--color-pinia-yellow);
+  --color-error: #fc8181;
+
+  /* Priority Colors */
+  --color-priority-low: #63b3ed;
+  --color-priority-medium: #fbd38d;
+  --color-priority-high: #fc8181;
 }
