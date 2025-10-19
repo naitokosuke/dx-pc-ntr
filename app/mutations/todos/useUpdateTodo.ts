@@ -1,6 +1,7 @@
 import { useMutation, useQueryCache } from "@pinia/colada";
 import type { TodoPriority, TodoStatus } from "#shared/schemas/todo.schema";
 import { todosKeys, dashboardKeys } from "~/queries/queryKeys";
+import type { InternalApi } from "nitropack/types";
 
 export interface UpdateTodoData {
   title?: string;
@@ -20,9 +21,10 @@ export function useUpdateTodo() {
         ...data,
         dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
       };
-      return await $fetch("/api/todos/:id", {
+
+      // FIXME: Remove type args
+      return await $fetch<InternalApi["/api/todos/:id"]["put"]>(`/api/todos/${id}`, {
         method: "PUT",
-        params: { id },
         body: payload,
       });
     },

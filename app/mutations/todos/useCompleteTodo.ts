@@ -1,6 +1,7 @@
 import { useMutation, useQueryCache } from "@pinia/colada";
 import { todosKeys, dashboardKeys } from "~/queries/queryKeys";
 import type { TodoStatus } from "#shared/schemas/todo.schema";
+import type { InternalApi } from "nitropack/types";
 
 export function useCompleteTodo() {
   const queryCache = useQueryCache();
@@ -9,9 +10,9 @@ export function useCompleteTodo() {
     mutation: async ({ id, currentStatus }: { id: string; currentStatus: TodoStatus }) => {
       const status: TodoStatus = currentStatus === "completed" ? "pending" : "completed";
 
-      return await $fetch("/api/todos/:id", {
+      // FIXME: Remove type args
+      return await $fetch<InternalApi["/api/todos/:id"]["put"]>(`/api/todos/${id}`, {
         method: "PUT",
-        params: { id },
         body: {
           status,
           completedAt: status === "completed" ? new Date().toISOString() : undefined,
