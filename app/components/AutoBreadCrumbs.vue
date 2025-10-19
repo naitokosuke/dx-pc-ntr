@@ -1,3 +1,7 @@
+<!--
+  DEPRECATED: Do not use this component. Use Breadcrumbs.vue instead.
+-->
+
 <script setup lang="ts">
 import type { RoutesNamedLocations, RoutesNamesList } from "@typed-router";
 import { routesNames } from "@typed-router";
@@ -5,7 +9,7 @@ import { routesNames } from "@typed-router";
 const route = useRoute();
 const { t } = useI18n();
 
-// FIXME: IS THERE AN ANOTHER WAY!?
+// FIXME: IS THERE A BETTER WAY TO DO THIS?
 const LOCALE_SUFFIX_PATTERN = /___[a-z]+$/;
 function stripLocaleSuffix(name: string | symbol | null | undefined): string {
   if (!name || typeof name === "symbol") return "";
