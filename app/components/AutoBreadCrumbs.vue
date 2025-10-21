@@ -7,7 +7,6 @@ import type { RoutesNamedLocations, RoutesNamesList } from "@typed-router";
 import { routesNames } from "@typed-router";
 
 const route = useRoute();
-const { t } = useI18n();
 
 // FIXME: IS THERE A BETTER WAY TO DO THIS?
 const LOCALE_SUFFIX_PATTERN = /___[a-z]+$/;
@@ -46,18 +45,18 @@ function buildRoute(name: RoutesNamesList): RoutesNamedLocations | undefined {
 }
 
 // FIXME: REDUNDANT & UGLY
-function getRouteI18nKey(name: RoutesNamesList): string {
+function getRouteLabel(name: RoutesNamesList): string {
   switch (name) {
-    case "index": return "pages.dashboard";
-    case "archived": return "pages.archived";
-    case "projects": return "pages.projects.list";
-    case "projects-new": return "pages.projects.new";
-    case "search": return "pages.search";
-    case "tags": return "pages.tags.list";
-    case "todos": return "pages.todos.list";
-    case "todos-new": return "pages.todos.new";
+    case "index": return "ダッシュボード";
+    case "archived": return "アーカイブ一覧";
+    case "projects": return "プロジェクト一覧";
+    case "projects-new": return "プロジェクト作成";
+    case "search": return "全体横断検索";
+    case "tags": return "タグ一覧";
+    case "todos": return "TODO一覧";
+    case "todos-new": return "TODO作成";
 
-    // NOTE: Parameterized routes use param values directly as labels, so no i18n key needed
+    // NOTE: Parameterized routes use param values directly as labels, so no label needed
     case "projects-projectId": return "";
     case "projects-projectId-settings": return "";
     case "tags-tag": return "";
@@ -74,7 +73,7 @@ const breadcrumbs = computed<{
   label: string;
   to?: RoutesNamedLocations;
 }[]>(() => [
-  { label: t("pages.dashboard"), to: { name: "index" } },
+  { label: "ダッシュボード", to: { name: "index" } },
   ...route.matched
     .map(matchedRoute => stripLocaleSuffix(matchedRoute.name))
     .filter((name): name is RoutesNamesList => name !== "" && name !== "index" && isRouteName(name))
@@ -83,12 +82,7 @@ const breadcrumbs = computed<{
       const paramValue = Object.values(route.params)[0];
 
       return {
-        label: paramValue?.toString() ?? (() => {
-          const i18nKey = getRouteI18nKey(name);
-          if (!i18nKey) return name;
-          const translated = t(i18nKey);
-          return translated !== i18nKey ? translated : name;
-        })(),
+        label: paramValue?.toString() ?? (getRouteLabel(name) || name),
         to: isLast ? undefined : buildRoute(name),
       };
     }),
@@ -105,12 +99,12 @@ const breadcrumbs = computed<{
         v-for="(bc, index) in breadcrumbs"
         :key="bc.to ? JSON.stringify(bc.to) : bc.label"
       >
-        <NuxtLinkLocale
+        <NuxtLink
           v-if="bc.to"
           :to="bc.to"
         >
           {{ bc.label }}
-        </NuxtLinkLocale>
+        </NuxtLink>
         <span
           v-else
           aria-current="page"

@@ -1,21 +1,32 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 import { useQuery } from "@pinia/colada";
+import type { TodoStatus, TodoPriority } from "#shared/schemas/todo.schema";
 import { formatDate, formatRelativeDate } from "~/utils/date";
 import { dashboardKeys } from "~/queries/queryKeys";
 
-const { t, locale } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 
-setBreadcrumbs([{ label: t("pages.dashboard") }]);
+setBreadcrumbs([{ label: "ダッシュボード" }]);
 
 const { state, asyncStatus } = useQuery({
   key: dashboardKeys.root,
   query: () => $fetch("/api/dashboard/summary"),
 });
 
-const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
-const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
+const statusLabels: Record<TodoStatus, string> = {
+  pending: "未着手",
+  in_progress: "進行中",
+  completed: "完了",
+  archived: "アーカイブ",
+};
+const priorityLabels: Record<TodoPriority, string> = {
+  low: "低",
+  medium: "中",
+  high: "高",
+};
+const getStatusLabel = (status: string) => statusLabels[status as TodoStatus];
+const getPriorityLabel = (priority: string) => priorityLabels[priority as TodoPriority];
 </script>
 
 <template>
@@ -24,14 +35,14 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       v-if="asyncStatus === 'loading'"
       class="status-message"
     >
-      {{ $t("common.loading") }}
+      読み込み中...
     </div>
 
     <div
       v-else-if="state.error"
       class="status-message error"
     >
-      {{ $t("dashboard.error.message", { message: state.error.message }) }}
+      エラー: {{ state.error.message }}
     </div>
 
     <div
@@ -39,25 +50,25 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       class="content"
     >
       <section class="stats">
-        <h3>{{ $t("dashboard.summary.title") }}</h3>
+        <h3>概要</h3>
         <div class="cards">
           <Card
-            :label="$t('dashboard.summary.totalTodos')"
+            label="総TODO数"
             :value="state.data.summary.totalTodos"
           />
           <Card
-            :label="$t('dashboard.summary.totalProjects')"
+            label="プロジェクト数"
             :value="state.data.summary.totalProjects"
           />
           <Card
-            :label="$t('dashboard.summary.totalTags')"
+            label="タグ数"
             :value="state.data.summary.totalTags"
           />
         </div>
       </section>
 
       <section class="stats">
-        <h3>{{ $t("dashboard.status.title") }}</h3>
+        <h3>ステータス別</h3>
         <div class="cards">
           <Card
             v-for="(count, status) in state.data.todosByStatus"
@@ -69,7 +80,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </section>
 
       <section class="stats">
-        <h3>{{ $t("dashboard.priority.title") }}</h3>
+        <h3>優先度別</h3>
         <div class="cards">
           <Card
             v-for="(count, priority) in state.data.todosByPriority"
@@ -81,55 +92,55 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </section>
 
       <section class="todos">
-        <h3>{{ $t("dashboard.recentTodos.title") }}</h3>
+        <h3>最近のTODO</h3>
         <div
           v-if="state.data.recentTodos.length === 0"
           class="empty"
         >
-          {{ $t("dashboard.recentTodos.empty") }}
+          TODOがありません
         </div>
         <ul v-else>
           <li
             v-for="todo in state.data.recentTodos"
             :key="todo.id"
           >
-            <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
+            <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
               <div>
                 <strong>{{ todo.title }}</strong>
                 <span>{{ getPriorityLabel(todo.priority) }}</span>
               </div>
               <div>
                 <span>{{ getStatusLabel(todo.status) }}</span>
-                <span>{{ formatDate(todo.createdAt, locale, { year: "numeric", month: "long", day: "numeric" }) }}</span>
+                <span>{{ formatDate(todo.createdAt, { year: "numeric", month: "long", day: "numeric" }) }}</span>
               </div>
-            </NuxtLinkLocale>
+            </NuxtLink>
           </li>
         </ul>
       </section>
 
       <section class="todos">
-        <h3>{{ $t("dashboard.upcomingTodos.title") }}</h3>
+        <h3>期限の近いTODO</h3>
         <div
           v-if="state.data.upcomingTodos.length === 0"
           class="empty"
         >
-          {{ $t("dashboard.upcomingTodos.empty") }}
+          期限付きのTODOがありません
         </div>
         <ul v-else>
           <li
             v-for="todo in state.data.upcomingTodos"
             :key="todo.id"
           >
-            <NuxtLinkLocale :to="{ name: 'todos-id', params: { id: todo.id } }">
+            <NuxtLink :to="{ name: 'todos-id', params: { id: todo.id } }">
               <div>
                 <strong>{{ todo.title }}</strong>
                 <span>{{ getPriorityLabel(todo.priority) }}</span>
               </div>
               <div v-if="todo.dueDate">
                 <span>{{ getStatusLabel(todo.status) }}</span>
-                <span>{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
+                <span>期限: {{ formatRelativeDate(todo.dueDate) }}</span>
               </div>
-            </NuxtLinkLocale>
+            </NuxtLink>
           </li>
         </ul>
       </section>

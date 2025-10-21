@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from "~/components/Breadcrumbs.vue";
 
-const { t } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 
 onMounted(() => {
   setBreadcrumbs([
-    { to: { name: "index" }, label: t("pages.dashboard") },
-    { label: t("pages.tags.list") },
+    { to: { name: "index" }, label: "ダッシュボード" },
+    { label: "タグ一覧" },
   ]);
 });
 </script>
 
 <template>
-  <h2>{{ $t("pages.tags.list") }}</h2>
+  <h2>タグ一覧</h2>
 </template>

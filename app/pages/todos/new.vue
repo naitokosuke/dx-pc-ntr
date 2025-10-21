@@ -11,15 +11,13 @@ interface FormData {
   tags: string[];
 }
 
-const { t } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 const router = useRouter();
-const localePath = useLocalePath();
 
 setBreadcrumbs([
-  { to: localePath({ name: "index" }), label: t("pages.dashboard") },
-  { to: localePath({ name: "todos" }), label: t("pages.todos.list") },
-  { label: t("pages.todos.new") },
+  { to: { name: "index" }, label: "ダッシュボード" },
+  { to: { name: "todos" }, label: "TODO一覧" },
+  { label: "TODO作成" },
 ]);
 
 const form = ref<FormData>({
@@ -34,7 +32,7 @@ const { mutate, asyncStatus } = useCreateTodo();
 
 const handleSubmit = () => {
   mutate(form.value);
-  router.push(localePath({ name: "todos" }));
+  router.push({ name: "todos" });
 };
 
 const tagInput = ref("");
@@ -48,19 +46,24 @@ const removeTag = (tag: string) => {
   form.value.tags = form.value.tags.filter(t => t !== tag);
 };
 
-const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
+const priorityLabels: Record<TodoPriority, string> = {
+  low: "低",
+  medium: "中",
+  high: "高",
+};
+const getPriorityLabel = (priority: string) => priorityLabels[priority as TodoPriority];
 </script>
 
 <template>
   <div class="new-todo-page">
-    <h1>{{ $t("pages.todos.new") }}</h1>
+    <h1>TODO作成</h1>
 
     <form
       class="todo-form"
       @submit.prevent="handleSubmit"
     >
       <div class="form-group">
-        <label for="title">{{ $t("todos.form.title") }}</label>
+        <label for="title">タイトル</label>
         <input
           id="title"
           v-model="form.title"
@@ -70,7 +73,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </div>
 
       <div class="form-group">
-        <label for="description">{{ $t("todos.form.description") }}</label>
+        <label for="description">説明</label>
         <textarea
           id="description"
           v-model="form.description"
@@ -79,7 +82,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </div>
 
       <div class="form-group">
-        <label for="priority">{{ $t("todos.form.priority") }}</label>
+        <label for="priority">優先度</label>
         <select
           id="priority"
           v-model="form.priority"
@@ -97,7 +100,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </div>
 
       <div class="form-group">
-        <label for="dueDate">{{ $t("todos.form.dueDate") }}</label>
+        <label for="dueDate">期限</label>
         <input
           id="dueDate"
           v-model="form.dueDate"
@@ -106,7 +109,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
       </div>
 
       <div class="form-group">
-        <label for="tags">{{ $t("todos.form.tags") }}</label>
+        <label for="tags">タグ</label>
         <div class="tag-input-container">
           <input
             id="tags"
@@ -118,7 +121,7 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
             type="button"
             @click="addTag"
           >
-            {{ $t("todos.form.addTag") }}
+            追加
           </button>
         </div>
         <div
@@ -147,14 +150,14 @@ const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}
           :disabled="asyncStatus === 'loading' || !form.title"
           class="submit-button"
         >
-          {{ asyncStatus === "loading" ? $t("common.creating") : $t("todos.form.create") }}
+          {{ asyncStatus === "loading" ? "作成中..." : "作成" }}
         </button>
-        <NuxtLinkLocale
+        <NuxtLink
           :to="{ name: 'todos' }"
           class="cancel-button"
         >
-          {{ $t("common.cancel") }}
-        </NuxtLinkLocale>
+          キャンセル
+        </NuxtLink>
       </div>
     </form>
   </div>

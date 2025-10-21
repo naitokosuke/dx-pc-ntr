@@ -2,39 +2,34 @@
 import type { RoutesNamesList } from "@typed-router";
 import { routesNames } from "@typed-router";
 
-const { t } = useI18n();
-
-const navLinks = computed<{ name: RoutesNamesList; label: string }[]>(() => [
-  { name: routesNames.index, label: t("pages.dashboard") },
-  { name: routesNames.todos, label: t("pages.todos.list") },
-  { name: routesNames.projects, label: t("pages.projects.list") },
-  { name: routesNames.tags, label: t("pages.tags.list") },
-  { name: routesNames.search, label: t("pages.search") },
-  { name: routesNames.archived, label: t("pages.archived") },
-]);
+const navLinks: { name: RoutesNamesList; label: string }[] = [
+  { name: routesNames.index, label: "ダッシュボード" },
+  { name: routesNames.todos, label: "TODO一覧" },
+  { name: routesNames.projects, label: "プロジェクト一覧" },
+  { name: routesNames.tags, label: "タグ一覧" },
+  { name: routesNames.search, label: "全体横断検索" },
+  { name: routesNames.archived, label: "アーカイブ一覧" },
+];
 </script>
 
 <template>
   <header>
     <div class="header-left">
       <h1>
-        <NuxtLinkLocale to="/">
-          {{ $t("common.appName") }}
-        </NuxtLinkLocale>
+        <NuxtLink to="/">
+          Todoアプリ
+        </NuxtLink>
       </h1>
       <nav class="main-nav">
-        <NuxtLinkLocale
+        <NuxtLink
           v-for="link in navLinks"
           :key="link.name"
           :to="{ name: link.name }"
         >
           {{ link.label }}
-        </NuxtLinkLocale>
+        </NuxtLink>
       </nav>
     </div>
-    <nav class="utility-nav">
-      <LangSelect />
-    </nav>
   </header>
 </template>
 
@@ -103,9 +98,5 @@ header {
     }
   }
 
-  .utility-nav {
-    display: grid;
-    gap: 1rem;
-  }
 }
 </style>

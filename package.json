@@ -18,7 +18,6 @@
   "dependencies": {
     "@nuxt/eslint": "1.8.0",
     "@nuxt/icon": "2.0.0",
-    "@nuxtjs/i18n": "10.1.1",
     "@pinia/colada": ">=0.17.6",
     "@pinia/colada-nuxt": "0.2.3",
     "@pinia/nuxt": "0.11.2",

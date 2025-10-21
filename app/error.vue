@@ -1,3 +1,3 @@
 <template>
-  <h2>{{ $t("common.error") }}</h2>
+  <h2>エラーが発生しました</h2>
 </template>

@@ -9,12 +9,11 @@ import { todosKeys } from "~/queries/queryKeys";
 const route = useRoute("todos");
 const router = useRouter();
 
-const { t, locale } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 
 setBreadcrumbs([
-  { to: { name: "index" }, label: t("pages.dashboard") },
-  { label: t("pages.todos.list") },
+  { to: { name: "index" }, label: "ダッシュボード" },
+  { label: "TODO一覧" },
 ]);
 
 const isValidStatus = (value: unknown): value is TodoStatus => {
@@ -47,8 +46,19 @@ const clearFilters = () => {
   priorityFilter.value = "";
 };
 
-const getStatusLabel = (status: string) => t(`dashboard.status.${status}`);
-const getPriorityLabel = (priority: string) => t(`dashboard.priority.${priority}`);
+const statusLabels: Record<TodoStatus, string> = {
+  pending: "未着手",
+  in_progress: "進行中",
+  completed: "完了",
+  archived: "アーカイブ",
+};
+const priorityLabels: Record<TodoPriority, string> = {
+  low: "低",
+  medium: "中",
+  high: "高",
+};
+const getStatusLabel = (status: string) => statusLabels[status as TodoStatus];
+const getPriorityLabel = (priority: string) => priorityLabels[priority as TodoPriority];
 
 watch(queryParams, (newParams) => {
   router.push({ query: newParams });
@@ -84,29 +94,29 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
         <input
           v-model="quickAddTitle"
           type="text"
-          :placeholder="$t('todos.quickAdd.placeholder')"
+          placeholder="タイトルを入力して素早く追加"
           :disabled="createStatus === 'loading'"
         >
         <button
           type="submit"
           :disabled="createStatus === 'loading' || !quickAddTitle.trim()"
         >
-          {{ $t("todos.quickAdd.add") }}
+          追加
         </button>
       </form>
-      <NuxtLinkLocale
+      <NuxtLink
         :to="{ name: 'todos-new' }"
         class="create-button"
       >
-        {{ $t("todos.createNew") }}
-      </NuxtLinkLocale>
+        新規TODO作成
+      </NuxtLink>
     </div>
 
     <section class="filters">
       <input
         v-model="searchQuery"
         type="text"
-        :placeholder="$t('todos.filters.search')"
+        placeholder="検索"
         class="search-input"
       >
 
@@ -115,7 +125,7 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
         class="filter-select"
       >
         <option value="">
-          {{ $t("todos.filters.all") }} ({{ $t("todos.filters.status") }})
+          すべて (ステータス)
         </option>
         <option value="pending">
           {{ getStatusLabel("pending") }}
@@ -133,7 +143,7 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
         class="filter-select"
       >
         <option value="">
-          {{ $t("todos.filters.all") }} ({{ $t("todos.filters.priority") }})
+          すべて (優先度)
         </option>
         <option value="low">
           {{ getPriorityLabel("low") }}
@@ -151,7 +161,7 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
         class="clear-button"
         @click="clearFilters"
       >
-        {{ $t("todos.filters.clear") }}
+        フィルタをクリア
       </button>
     </section>
 
@@ -159,21 +169,21 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
       v-if="asyncStatus === 'loading'"
       class="status-message"
     >
-      {{ $t("common.loading") }}
+      読み込み中...
     </div>
 
     <div
       v-else-if="todos.error"
       class="status-message error"
     >
-      {{ $t("dashboard.error.message", { message: todos.error.message }) }}
+      エラー: {{ todos.error.message }}
     </div>
 
     <div
       v-else-if="!todos.data || todos.data.length === 0"
       class="status-message"
     >
-      {{ $t("todos.empty") }}
+      TODOが見つかりません
     </div>
 
     <ul
@@ -197,10 +207,10 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
             :disabled="deleteStatus === 'loading'"
             @click="handleDelete(todo.id)"
           >
-            {{ $t("todos.actions.delete") }}
+            削除
           </button>
         </div>
-        <NuxtLinkLocale
+        <NuxtLink
           :to="{ name: 'todos-id', params: { id: todo.id } }"
           class="todo-content"
         >
@@ -218,11 +228,11 @@ const handleComplete = (id: string, currentStatus: TodoStatus) => {
             {{ todo.description }}
           </div>
           <div class="todo-meta">
-            <span>{{ formatDate(todo.createdAt, locale) }}</span>
-            <span v-if="todo.dueDate">{{ $t("dashboard.upcomingTodos.dueDate") }}: {{ formatRelativeDate(todo.dueDate, t) }}</span>
+            <span>{{ formatDate(todo.createdAt) }}</span>
+            <span v-if="todo.dueDate">期限: {{ formatRelativeDate(todo.dueDate) }}</span>
             <span v-if="todo.tags.length > 0">{{ todo.tags.join(", ") }}</span>
           </div>
-        </NuxtLinkLocale>
+        </NuxtLink>
       </li>
     </ul>
   </div>
