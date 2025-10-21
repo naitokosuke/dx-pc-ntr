@@ -1,8 +1,8 @@
-<script setup lang="ts" generic="T extends RoutesNamesList, P extends string">
-import type { NuxtRoute, RoutesNamesList } from "@typed-router";
+<script setup lang="ts">
+import type { RouteLocationRaw } from "vue-router";
 
 const { to } = defineProps<{
-  to?: NuxtRoute<T, P>;
+  to?: RouteLocationRaw;
 }>();
 </script>
 

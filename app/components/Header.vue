@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import type { RoutesNamesList } from "@typed-router";
-import { routesNames } from "@typed-router";
-
 const { t } = useI18n();
 
-const navLinks = computed<{ name: RoutesNamesList; label: string }[]>(() => [
-  { name: routesNames.index, label: t("pages.dashboard") },
-  { name: routesNames.todos, label: t("pages.todos.list") },
-  { name: routesNames.projects, label: t("pages.projects.list") },
-  { name: routesNames.tags, label: t("pages.tags.list") },
-  { name: routesNames.search, label: t("pages.search") },
-  { name: routesNames.archived, label: t("pages.archived") },
+const navLinks = computed<{ name: string; label: string }[]>(() => [
+  { name: "index", label: t("pages.dashboard") },
+  { name: "todos", label: t("pages.todos.list") },
+  { name: "projects", label: t("pages.projects.list") },
+  { name: "tags", label: t("pages.tags.list") },
+  { name: "search", label: t("pages.search") },
+  { name: "archived", label: t("pages.archived") },
 ]);
 </script>
 

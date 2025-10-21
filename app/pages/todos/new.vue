@@ -14,11 +14,10 @@ interface FormData {
 const { t } = useI18n();
 const { setBreadcrumbs } = useBreadcrumbs();
 const router = useRouter();
-const localePath = useLocalePath();
 
 setBreadcrumbs([
-  { to: localePath({ name: "index" }), label: t("pages.dashboard") },
-  { to: localePath({ name: "todos" }), label: t("pages.todos.list") },
+  { to: { name: "index" }, label: t("pages.dashboard") },
+  { to: { name: "todos" }, label: t("pages.todos.list") },
   { label: t("pages.todos.new") },
 ]);
 
@@ -34,7 +33,7 @@ const { mutate, asyncStatus } = useCreateTodo();
 
 const handleSubmit = () => {
   mutate(form.value);
-  router.push(localePath({ name: "todos" }));
+  router.push({ name: "todos" });
 };
 
 const tagInput = ref("");

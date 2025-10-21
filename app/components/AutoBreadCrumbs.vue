@@ -3,9 +3,6 @@
 -->
 
 <script setup lang="ts">
-import type { RoutesNamedLocations, RoutesNamesList } from "@typed-router";
-import { routesNames } from "@typed-router";
-
 const route = useRoute();
 const { t } = useI18n();
 
@@ -16,37 +13,55 @@ function stripLocaleSuffix(name: string | symbol | null | undefined): string {
   return name.toString().replace(LOCALE_SUFFIX_PATTERN, "");
 }
 
-function isRouteName(name: string): name is RoutesNamesList {
-  return Object.values(routesNames).some(routeName => routeName === name);
+const ROUTE_NAMES = [
+  "index",
+  "archived",
+  "projects",
+  "projects-new",
+  "search",
+  "tags",
+  "todos",
+  "todos-new",
+  "projects-projectId",
+  "projects-projectId-settings",
+  "tags-tag",
+  "todos-id",
+  "todos-id-edit",
+] as const;
+
+function isRouteName(name: string): boolean {
+  return ROUTE_NAMES.includes(name as any);
 }
 
 // FIXME: REDUNDANT & UGLY
-function buildRoute(name: RoutesNamesList): RoutesNamedLocations | undefined {
+function buildRoute(name: string): { name: string; params?: Record<string, any> } | undefined {
   const { params } = route;
 
   switch (name) {
-    case "index": return { name };
-    case "archived": return { name };
-    case "projects": return { name };
-    case "projects-new": return { name };
-    case "search": return { name };
-    case "tags": return { name };
-    case "todos": return { name };
-    case "todos-new": return { name };
-    case "projects-projectId": return "projectId" in params ? { name, params: { projectId: params.projectId } } : undefined;
-    case "projects-projectId-settings": return "projectId" in params ? { name, params: { projectId: params.projectId } } : undefined;
-    case "tags-tag": return "tag" in params ? { name, params: { tag: params.tag } } : undefined;
-    case "todos-id": return "id" in params ? { name, params: { id: params.id } } : undefined;
-    case "todos-id-edit": return "id" in params ? { name, params: { id: params.id } } : undefined;
-    default: {
-      const _exhaustiveCheck: never = name;
-      return _exhaustiveCheck;
-    }
+    case "index":
+    case "archived":
+    case "projects":
+    case "projects-new":
+    case "search":
+    case "tags":
+    case "todos":
+    case "todos-new":
+      return { name };
+    case "projects-projectId":
+    case "projects-projectId-settings":
+      return "projectId" in params ? { name, params: { projectId: params.projectId } } : undefined;
+    case "tags-tag":
+      return "tag" in params ? { name, params: { tag: params.tag } } : undefined;
+    case "todos-id":
+    case "todos-id-edit":
+      return "id" in params ? { name, params: { id: params.id } } : undefined;
+    default:
+      return undefined;
   }
 }
 
 // FIXME: REDUNDANT & UGLY
-function getRouteI18nKey(name: RoutesNamesList): string {
+function getRouteI18nKey(name: string): string {
   switch (name) {
     case "index": return "pages.dashboard";
     case "archived": return "pages.archived";
@@ -58,26 +73,25 @@ function getRouteI18nKey(name: RoutesNamesList): string {
     case "todos-new": return "pages.todos.new";
 
     // NOTE: Parameterized routes use param values directly as labels, so no i18n key needed
-    case "projects-projectId": return "";
-    case "projects-projectId-settings": return "";
-    case "tags-tag": return "";
-    case "todos-id": return "";
-    case "todos-id-edit": return "";
-    default: {
-      const _exhaustiveCheck: never = name;
-      return _exhaustiveCheck;
-    }
+    case "projects-projectId":
+    case "projects-projectId-settings":
+    case "tags-tag":
+    case "todos-id":
+    case "todos-id-edit":
+      return "";
+    default:
+      return "";
   }
 }
 
 const breadcrumbs = computed<{
   label: string;
-  to?: RoutesNamedLocations;
+  to?: { name: string; params?: Record<string, any> };
 }[]>(() => [
   { label: t("pages.dashboard"), to: { name: "index" } },
   ...route.matched
     .map(matchedRoute => stripLocaleSuffix(matchedRoute.name))
-    .filter((name): name is RoutesNamesList => name !== "" && name !== "index" && isRouteName(name))
+    .filter((name): name is string => name !== "" && name !== "index" && isRouteName(name))
     .map((name, index, array) => {
       const isLast = index === array.length - 1;
       const paramValue = Object.values(route.params)[0];

@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { NuxtRoute, RoutesNamesList } from "@typed-router";
+import type { RouteLocationRaw } from "vue-router";
 
 export interface BreadcrumbItem {
-  to?: NuxtRoute<RoutesNamesList, string>;
+  to?: RouteLocationRaw;
   label: string;
 }
 

@@ -6,7 +6,7 @@ import { formatDate, formatRelativeDate } from "~/utils/date";
 import { useCreateTodo, useDeleteTodo, useCompleteTodo } from "~/mutations/todos";
 import { todosKeys } from "~/queries/queryKeys";
 
-const route = useRoute("todos");
+const route = useRoute();
 const router = useRouter();
 
 const { t, locale } = useI18n();

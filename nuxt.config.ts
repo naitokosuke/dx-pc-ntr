@@ -4,7 +4,6 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@pinia/nuxt",
     "@pinia/colada-nuxt",
-    "nuxt-typed-router",
     "@nuxtjs/i18n",
     "@nuxt/icon",
     "@vueuse/nuxt",
