@@ -1,75 +1,59 @@
-# Nuxt Minimal Starter
+# dx-pc-ntr
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Pinia Colada × Nuxt Typed Router
 
-## Setup
 
-Make sure to install dependencies:
+## 主な機能
+
+- TODO 管理
+- ダッシュボード
+- 多言語対応
+
+## セットアップ
+
+### 依存関係のインストール
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## 開発サーバー
 
-Start the development server on `http://localhost:3000`:
+開発サーバーを `http://localhost:7110` で起動します
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## ディレクトリ構成
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+dx-pc-ntr/
+├── app/                    # クライアントサイドコード
+│   ├── assets/            # CSS・静的アセット
+│   ├── components/        # Vue コンポーネント
+│   ├── layouts/           # レイアウトテンプレート
+│   ├── pages/             # ページコンポーネント（ファイルベースルーティング）
+│   ├── mutations/         # Pinia Colada ミューテーション
+│   └── queries/           # クエリキー定義
+├── server/                # サーバーサイドコード
+│   ├── api/              # API エンドポイント
+│   └── db/               # データベースロジック
+│       ├── storage.ts    # ストレージ設定
+│       └── repositories/ # リポジトリパターン
+├── shared/               # クライアント・サーバー共通コード
+│   └── schemas/          # Zod バリデーションスキーマ
+├── locales/              # i18n メッセージファイル
+│   ├── ja.yaml          # 日本語
+│   └── en.yaml          # 英語
+└── docs/                 # ドキュメント
 ```
 
-Locally preview production build:
+## ページ構成
 
-```bash
-# npm
-npm run preview
+[pages-structure.md](./docs/pages-structure.md) を参照してください。
 
-# pnpm
-pnpm preview
+## 参考リンク
 
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- [Nuxt Typed Router ドキュメント](https://nuxt-typed-router.vercel.app/)
+- [Pinia Colada ドキュメント](https://pinia-colada.esm.dev/)
