@@ -2,6 +2,7 @@
 
 Pinia Colada × Nuxt Typed Router
 
+**All server-side codes are vibe-coded.**
 
 ## 主な機能
 
